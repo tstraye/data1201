@@ -36,3 +36,5 @@
 # Questions for Post-Lab Assignment 10!
 
 ### Question 6: After the last step, some columns are empty. (You can check by text faceting a column) Why? What do you think we can do to fix it?
+
+##I think that some columns are empty because there is no data to show. To fix it, you can add a N/A or 0 to show that there was no data to add to the column.
