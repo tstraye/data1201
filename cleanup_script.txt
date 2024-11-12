@@ -1,0 +1,497 @@
+[
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "yr",
+    "expression": "value.toNumber()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column yr using expression value.toNumber()"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "recordID",
+    "expression": "value.toNumber()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column recordID using expression value.toNumber()"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "period",
+    "expression": "value.toNumber()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column period using expression value.toNumber()"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [
+        {
+          "type": "scatterplot",
+          "name": "recordID (x) vs. period (y)",
+          "ex": "value",
+          "ey": "value",
+          "cx": "recordID",
+          "cy": "period",
+          "l": 150,
+          "dot": 0.8,
+          "from_x": 0.013333333333333334,
+          "to_x": 1,
+          "from_y": 0.05333333333333334,
+          "to_y": 1,
+          "dim_x": "lin",
+          "dim_y": "lin"
+        }
+      ],
+      "mode": "row-based"
+    },
+    "columnName": "note1",
+    "expression": "value.toNumber()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column note1 using expression value.toNumber()"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "scientificName",
+    "expression": "value.trim()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column scientificName using expression value.trim()"
+  },
+  {
+    "op": "core/column-split",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "scientificName",
+    "guessCellType": true,
+    "removeOriginalColumn": false,
+    "mode": "separator",
+    "separator": " ",
+    "regex": false,
+    "maxColumns": 0,
+    "description": "Split column scientificName by separator"
+  },
+  {
+    "op": "core/column-rename",
+    "oldColumnName": "scientificName 1",
+    "newColumnName": "Genus",
+    "description": "Rename column scientificName 1 to Genus"
+  },
+  {
+    "op": "core/column-rename",
+    "oldColumnName": "scientificName 2",
+    "newColumnName": "Species",
+    "description": "Rename column scientificName 2 to Species"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "yr",
+    "expression": "join ([coalesce(cells['yr'].value,''),coalesce(cells['mo'].value,''),coalesce(cells['dy'].value,'')],'-')",
+    "onError": "keep-original",
+    "newColumnName": "date",
+    "columnInsertIndex": 8,
+    "description": "Create column date at index 8 based on column yr using expression join ([coalesce(cells['yr'].value,''),coalesce(cells['mo'].value,''),coalesce(cells['dy'].value,'')],'-')"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "date",
+    "expression": "value.toDate()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column date using expression value.toDate()"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "scientificName",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [
+          "Ammospermophilus harrisii",
+          "Ammospermophilis harrisi",
+          "Ammospermophilus harrisi"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "Ammospermophilus harrisii"
+      }
+    ],
+    "description": "Mass edit cells in column scientificName"
+  },
+  {
+    "op": "core/recon",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "scientificName",
+    "config": {
+      "mode": "standard-service",
+      "service": "http://eol.org/api/reconciliation",
+      "identifierSpace": "https://eol.org/reconciliation/identifier_space",
+      "schemaSpace": "https://eol.org/reconciliation/schema_space",
+      "type": {
+        "id": "taxon",
+        "name": "Taxon"
+      },
+      "autoMatch": false,
+      "batchSize": 10,
+      "columnDetails": [],
+      "limit": 0
+    },
+    "description": "Reconcile cells in column scientificName to type taxon"
+  },
+  {
+    "op": "core/recon",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "scientificName",
+    "config": {
+      "mode": "standard-service",
+      "service": "http://eol.org/api/reconciliation",
+      "identifierSpace": "https://eol.org/reconciliation/identifier_space",
+      "schemaSpace": "https://eol.org/reconciliation/schema_space",
+      "type": {
+        "id": "taxon",
+        "name": "Taxon"
+      },
+      "autoMatch": false,
+      "batchSize": 10,
+      "columnDetails": [],
+      "limit": 0
+    },
+    "description": "Reconcile cells in column scientificName to type taxon"
+  },
+  {
+    "op": "core/recon",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "scientificName",
+    "config": {
+      "mode": "standard-service",
+      "service": "http://eol.org/api/reconciliation",
+      "identifierSpace": "https://eol.org/reconciliation/identifier_space",
+      "schemaSpace": "https://eol.org/reconciliation/schema_space",
+      "type": {
+        "id": "taxon",
+        "name": "Taxon"
+      },
+      "autoMatch": false,
+      "batchSize": 10,
+      "columnDetails": [],
+      "limit": 0
+    },
+    "description": "Reconcile cells in column scientificName to type taxon"
+  },
+  {
+    "op": "core/recon",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "scientificName",
+    "config": {
+      "mode": "standard-service",
+      "service": "http://eol.org/api/reconciliation",
+      "identifierSpace": "https://eol.org/reconciliation/identifier_space",
+      "schemaSpace": "https://eol.org/reconciliation/schema_space",
+      "type": {
+        "id": "taxon",
+        "name": "Taxon"
+      },
+      "autoMatch": false,
+      "batchSize": 10,
+      "columnDetails": [],
+      "limit": 0
+    },
+    "description": "Reconcile cells in column scientificName to type taxon"
+  },
+  {
+    "op": "core/recon",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "scientificName",
+    "config": {
+      "mode": "standard-service",
+      "service": "http://eol.org/api/reconciliation",
+      "identifierSpace": "https://eol.org/reconciliation/identifier_space",
+      "schemaSpace": "https://eol.org/reconciliation/schema_space",
+      "type": {
+        "id": "taxon",
+        "name": "Taxon"
+      },
+      "autoMatch": false,
+      "batchSize": 10,
+      "columnDetails": [],
+      "limit": 0
+    },
+    "description": "Reconcile cells in column scientificName to type taxon"
+  },
+  {
+    "op": "core/recon",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "scientificName",
+    "config": {
+      "mode": "standard-service",
+      "service": "http://eol.org/api/reconciliation",
+      "identifierSpace": "https://eol.org/reconciliation/identifier_space",
+      "schemaSpace": "https://eol.org/reconciliation/schema_space",
+      "type": {
+        "id": "taxon",
+        "name": "Taxon"
+      },
+      "autoMatch": false,
+      "batchSize": 10,
+      "columnDetails": [],
+      "limit": 0
+    },
+    "description": "Reconcile cells in column scientificName to type taxon"
+  },
+  {
+    "op": "core/recon",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "scientificName",
+    "config": {
+      "mode": "standard-service",
+      "service": "http://eol.org/api/reconciliation",
+      "identifierSpace": "https://eol.org/reconciliation/identifier_space",
+      "schemaSpace": "https://eol.org/reconciliation/schema_space",
+      "type": {
+        "id": "taxon",
+        "name": "Taxon"
+      },
+      "autoMatch": false,
+      "batchSize": 10,
+      "columnDetails": [],
+      "limit": 0
+    },
+    "description": "Reconcile cells in column scientificName to type taxon"
+  },
+  {
+    "op": "core/recon",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "scientificName",
+    "config": {
+      "mode": "standard-service",
+      "service": "http://eol.org/api/reconciliation",
+      "identifierSpace": "https://eol.org/reconciliation/identifier_space",
+      "schemaSpace": "https://eol.org/reconciliation/schema_space",
+      "type": {
+        "id": "taxon",
+        "name": "Taxon"
+      },
+      "autoMatch": false,
+      "batchSize": 10,
+      "columnDetails": [],
+      "limit": 0
+    },
+    "description": "Reconcile cells in column scientificName to type taxon"
+  },
+  {
+    "op": "core/recon",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "scientificName",
+    "config": {
+      "mode": "standard-service",
+      "service": "https://eol.org/api/reconciliation",
+      "identifierSpace": "https://eol.org/reconciliation/identifier_space",
+      "schemaSpace": "https://eol.org/reconciliation/schema_space",
+      "type": {
+        "id": "taxon",
+        "name": "Taxon"
+      },
+      "autoMatch": false,
+      "batchSize": 10,
+      "columnDetails": [],
+      "limit": 0
+    },
+    "description": "Reconcile cells in column scientificName to type taxon"
+  },
+  {
+    "op": "core/recon-judge-similar-cells",
+    "engineConfig": {
+      "facets": [
+        {
+          "type": "list",
+          "name": "scientificName",
+          "expression": "value",
+          "columnName": "scientificName",
+          "invert": false,
+          "omitBlank": false,
+          "omitError": false,
+          "selection": [
+            {
+              "v": {
+                "v": "Ammospermophilus harrisii",
+                "l": "Ammospermophilus harrisii"
+              }
+            }
+          ],
+          "selectBlank": false,
+          "selectError": false
+        }
+      ],
+      "mode": "row-based"
+    },
+    "columnName": "scientificName",
+    "similarValue": "Ammospermophilus harrisii",
+    "judgment": "matched",
+    "match": {
+      "id": "pages/311663",
+      "name": "Ammospermophilus harrisii (Audubon &amp; Bachman 1854)",
+      "types": [
+        "taxon"
+      ],
+      "score": 75
+    },
+    "shareNewTopics": false,
+    "description": "Match item Ammospermophilus harrisii (Audubon &amp; Bachman 1854) (pages/311663) for cells containing \"Ammospermophilus harrisii\" in column scientificName"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [
+        {
+          "type": "list",
+          "name": "scientificName",
+          "expression": "value",
+          "columnName": "scientificName",
+          "invert": false,
+          "omitBlank": false,
+          "omitError": false,
+          "selection": [
+            {
+              "v": {
+                "v": "Ammospermophilus harrisii",
+                "l": "Ammospermophilus harrisii"
+              }
+            }
+          ],
+          "selectBlank": false,
+          "selectError": false
+        }
+      ],
+      "mode": "row-based"
+    },
+    "baseColumnName": "scientificName",
+    "expression": "cell.recon.match.id",
+    "onError": "set-to-blank",
+    "newColumnName": "EOL-ID",
+    "columnInsertIndex": 3,
+    "description": "Create column EOL-ID at index 3 based on column scientificName using expression cell.recon.match.id"
+  },
+  {
+    "op": "core/column-addition-by-fetching-urls",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "scientificName",
+    "urlExpression": "grel:\"http://api.gbif.org/v1/species/match?name=\"+escape(value,'url')",
+    "onError": "set-to-blank",
+    "newColumnName": "gbif_JSON",
+    "columnInsertIndex": 3,
+    "delay": 500,
+    "cacheResponses": true,
+    "httpHeadersJson": [
+      {
+        "name": "authorization",
+        "value": ""
+      },
+      {
+        "name": "if-modified-since",
+        "value": ""
+      },
+      {
+        "name": "accept-language",
+        "value": ""
+      },
+      {
+        "name": "accept-encoding",
+        "value": ""
+      },
+      {
+        "name": "user-agent",
+        "value": "OpenRefine 3.8.5 [TRUNK]"
+      },
+      {
+        "name": "accept",
+        "value": "*/*"
+      },
+      {
+        "name": "accept-charset",
+        "value": ""
+      }
+    ],
+    "description": "Create column gbif_JSON at index 3 by fetching URLs based on column scientificName using expression grel:\"http://api.gbif.org/v1/species/match?name=\"+escape(value,'url')"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "gbif_JSON",
+    "expression": "grel:value.parseJson().get(\"family\")",
+    "onError": "set-to-blank",
+    "newColumnName": "gbif_family",
+    "columnInsertIndex": 4,
+    "description": "Create column gbif_family at index 4 based on column gbif_JSON using expression grel:value.parseJson().get(\"family\")"
+  }
+]
